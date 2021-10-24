@@ -1,0 +1,52 @@
+{
+    "naver_shopping":{
+        "url":"https://shopping.naver.com/home/p/index.naver",
+        "search_box":{
+            "info":"네이버쇼핑 메인 검색창",
+            "tag_title":"검색어 입력",
+            "tag_class":"",
+            "xpath":"//*[@id=\"autocompleteWrapper\"]/input[1]",
+            "tag_name":""
+        },
+        "search_button":{
+            "info":"네이버쇼핑 메인 검색",
+            "tag_title":"",
+            "tag_class":"",
+            "xpath":"//*[@id=\"autocompleteWrapper\"]/a[2]",
+            "tag_name":""
+        },
+        "no_result":{
+            "info":"삼품 검색결과가 없는 경우",
+            "tag_title":"",
+            "tag_class":"",
+            "xpath":"//div[starts-with(@class, 'noResult_no_result')]"
+        },
+        "item_container":{
+            "info":"네이버쇼핑 하나하나를 담고 있는 컨테이너 태그",
+            "tag_class":"list_basis",
+            "xpath":"//div[starts-with(@class, 'basicList_depth')]"
+        },
+        "item_category_container":{
+            "info":"각 아이템의 카테고리를 담고 있는 태그",
+            "tag_name":"a",
+            "tag_class":"",
+            "xpath":"//a[starts-with(@target, '_blank') and starts-with(@class, 'basicList_category')]"
+        }
+    },
+    "google_spreadsheet":{
+        "url":"https://docs.google.com/spreadsheets/d/1_5cFQJFzAS8WkUBM1JrFFmm9gvH-Cz9RcxBUvGxdZ7Y/edit?usp=sharing",
+        "name":"시트1",
+        "keyword":{
+            "start_row":2,
+            "start_col":"B",
+            "end_row":999,
+            "end_col":"B"                
+        },
+        "target":{
+            "start_row":2,
+            "start_col":"O",
+            "end_row":999,
+            "end_col":"O"
+        }
+    }
+}

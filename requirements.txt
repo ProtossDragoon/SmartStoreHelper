@@ -1,0 +1,8 @@
+gspread
+oauth2client
+selenium
+google-api-python-client 
+google-auth-httplib2 
+google-auth-oauthlib
+pandas
+gspread_dataframe

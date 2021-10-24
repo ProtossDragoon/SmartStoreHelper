@@ -1,0 +1,14 @@
+```json
+{
+    "version":1,
+    "DOWNLOADING_FILE_DIR":"./assets",
+    "CREDENTIAL_FILE_PATH_PATH":"",
+    "SPREADSHEET_URL":"",
+    "SPREADSHEET_NAME":"",
+    "API_SCOPE":[
+        "https://spreadsheets.google.com/feeds",
+        "https://www.googleapis.com/auth/drive"
+    ],
+    "CHROME_DRIVER_PATH":"./chromedriver"
+}
+```
