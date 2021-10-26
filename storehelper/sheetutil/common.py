@@ -2,9 +2,11 @@
 
 # 내장 라이브러리
 import os
+from datetime import date
 
 # 서드파티 라이브러리
 import gspread
+from gspread import WorksheetNotFound
 from oauth2client.service_account import ServiceAccountCredentials
 
 # 우리 프로젝트
@@ -25,7 +27,12 @@ def authorize():
 def get_sheet(gc, spreadsheet_url, spreadsheet_name):
     meta = get_json_meatadata()
     doc = gc.open_by_url(spreadsheet_url) # 스프레스시트 문서 가져오기 
-    worksheet = doc.worksheet(spreadsheet_name) # 시트 선택하기
+    try:
+        worksheet = doc.worksheet(spreadsheet_name) # 시트 선택하기
+    except WorksheetNotFound:
+        worksheet = doc.add_worksheet(
+            title=spreadsheet_name,
+            rows="10000", cols="100")
     return worksheet
 
 
@@ -40,7 +47,9 @@ def authorize_v2_experimental():
     """API 문서가 변경되었는지 모르겠는데, 
     https://developers.google.com/sheets/api/quickstart/python
     에 따르면 아래와 같은 가이드를 사용하도록 권하고 있습니다.
-    그럼 난 도대체 뭘 본거지?
+    # NOTE : 이것은 low level REST API 이고, 
+    # 우리가 사용하기 편한 python api 는
+    # `gspread` 입니다.
 
     Returns:
         sheet : 스프레드시트 객체입니다.
