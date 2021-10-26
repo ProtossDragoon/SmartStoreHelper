@@ -44,9 +44,9 @@
         },
         "target":{
             "start_row":2,
-            "start_col":"O",
+            "start_col":"J",
             "end_row":999,
-            "end_col":"O"
+            "end_col":"J"
         }
     }
 }
