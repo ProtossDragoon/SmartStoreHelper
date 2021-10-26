@@ -178,7 +178,7 @@ def run():
             else:
                 ret += f'\n{unique_category}'
         
-        if ret:
+        if len(ret):
             print(f'키워드 {repr(keyword)} 에 해당하는 카테고리 셀'
                 f'(기존 스프레드 시트 값:{repr(w_cell.value)}) 에'
                 f'값 {repr(ret)} 을 덮어쓸 예정입니다.')
