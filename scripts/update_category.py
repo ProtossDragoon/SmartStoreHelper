@@ -18,13 +18,14 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 # 우리 프로젝트
+from storehelper.crawlutil.common import ChromeDriverManager
 from storehelper.sheetutil.common import authorize, get_sheet
-from storehelper.sheetutil.writer import overwrite_entire_dataframe
-from storehelper.crawlutil.common import chrome_driver, chrome_close_safely, wait_for_downloads_v2, scroll_page_down
-from storehelper.crawlutil.common import get_chrome_default_download_dir, set_with_join_chrome_default_download_dir
 
-set_with_join_chrome_default_download_dir(pathlib.Path(__file__).stem)
-chrome_download_dir = get_chrome_default_download_dir()
+
+cdm = ChromeDriverManager()
+cdm.set_default_download_dir(pathlib.Path(__file__).stem, join=True)
+chrome_driver = cdm.get_chrome_driver()
+chrome_download_dir = cdm.get_default_download_dir()
 
 
 def read_json():
@@ -139,7 +140,7 @@ def run():
         retry_max_cnt = 5
         while found_items_cnt < 10: # 10 개 미만의 상품이 발견될 경우
             # 네이버는 스크롤을 내리면 아이템들이 동적으로 로드됩니다.
-            scroll_page_down(delay=0.5)
+            cdm.scroll_page_down(delay=0.5)
 
             # 1페이지에 등록되어 있는 아이템들의 카테고리를 확인합니다.
             found_items_cnt, items = item_exists(ns_meta)
@@ -182,13 +183,18 @@ def run():
             print(f'키워드 {repr(keyword)} 에 해당하는 카테고리 셀'
                 f'(기존 스프레드 시트 값:{repr(w_cell.value)}) 에'
                 f'값 {repr(ret)} 을 덮어쓸 예정입니다.')
+            if w_cell.value != ret:
+                print(f'기존 정보에서 변경된 점이 존재합니다!')
             w_cell.value = ret
             ret = ''
+
+        if i == 5:
+            break
 
     # API 콜을 최소화하기 위해 모든 작업을 마친 뒤 업데이트합니다.
     # 중간에 업데이트할 수 있도록 만들어주는 것도 좋은 방법이리라 생각합니다.
     worksheet.update_cells(writing_cells)
-    chrome_close_safely()
+    cdm.chrome_close_safely()
 
 
 if __name__ == "__main__":
