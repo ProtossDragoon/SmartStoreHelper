@@ -3,17 +3,17 @@
         "url":"https://shopping.naver.com/home/p/index.naver",
         "search_box":{
             "info":"네이버쇼핑 메인 검색창",
+            "tag_name":"",
             "tag_title":"검색어 입력",
             "tag_class":"",
-            "xpath":"//*[@id=\"autocompleteWrapper\"]/input[1]",
-            "tag_name":""
+            "xpath":"//*[@id=\"autocompleteWrapper\"]/input[1]"
         },
         "search_button":{
             "info":"네이버쇼핑 메인 검색",
+            "tag_name":"",
             "tag_title":"",
             "tag_class":"",
-            "xpath":"//*[@id=\"autocompleteWrapper\"]/a[2]",
-            "tag_name":""
+            "xpath":"//*[@id=\"autocompleteWrapper\"]/a[2]"
         },
         "no_result":{
             "info":"삼품 검색결과가 없는 경우",
@@ -34,6 +34,7 @@
         }
     },
     "google_spreadsheet":{
+        "info":"키워드의 목록을 읽어오는 스프레드시트",
         "url":"https://docs.google.com/spreadsheets/d/1_5cFQJFzAS8WkUBM1JrFFmm9gvH-Cz9RcxBUvGxdZ7Y/edit?usp=sharing",
         "name":"시트1",
         "keyword":{
