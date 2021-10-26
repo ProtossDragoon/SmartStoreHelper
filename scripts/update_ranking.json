@@ -1,4 +1,58 @@
 {
-    "minimum_w":500,
-    "minimum_h":500
+    "랭킹도구":{
+        "url":"http://dogumaster.com/biz/rank",
+        "스토어명":{
+            "info":"스토어 이름을 넣는 필드",
+            "input_tag_name":"query",
+            "input_tag_id":"input_mall"
+        },
+        "검색어":{
+            "info":"검색창",
+            "tag_name":"input",
+            "tag_id":"input_query",
+            "tag_class":"",
+            "검색어최대길이":15
+        },
+        "검색_button":{
+            "info":"해당 키워드에 대해서 검색을 시작하는 버튼",
+            "tag_name":"",
+            "xpath":"//*[@id=\"input_submit\"]"
+        },
+        "CSV추출_button":{
+            "info":"CSV 추출하기 버튼",
+            "tag_name":"",
+            "tag_id":"btn_csv",
+            "tag_class":"",
+            "출력파일이름":"랭킹도구마스터"
+        },
+        "엑셀추출_button":{
+            "info":"엑셀파일 추출하기 버튼",
+            "tag_name":"",
+            "tag_id":"btn_excel",
+            "tag_class":"",
+            "출력파일이름":"랭킹도구마스터"
+        },
+        "최대반복가능횟수":100,
+        "min_window_w":500,
+        "min_window_h":500    
+    },
+    "google_spreadsheet":{
+        "read_keyword":{
+            "info":"키워드의 목록을 읽어오는 스프레드시트",
+            "url":"https://docs.google.com/spreadsheets/d/1_5cFQJFzAS8WkUBM1JrFFmm9gvH-Cz9RcxBUvGxdZ7Y/edit?usp=sharing",
+            "name":"시트1",
+            "keyword":{
+                "info":"키워드가 적혀 있는 영역",
+                "start_row":2,
+                "start_col":"B",
+                "end_row":999,
+                "end_col":"B"                
+            }
+        },
+        "write_ranking":{
+            "info":"키워드에 대한 랭킹을 적어내는 스프레드시트",
+            "url":"https://docs.google.com/spreadsheets/d/1_5cFQJFzAS8WkUBM1JrFFmm9gvH-Cz9RcxBUvGxdZ7Y/edit?usp=sharing",
+            "name":"rank_yy_mm_dd"
+        }
+    }
 }
