@@ -199,7 +199,6 @@ class ChromeDriverManager:
         num_files:int=1,
         chrome_driver_index=-1,
     )->None:
-        #FIXME : 클래스 메소드로 만들어주자.
         """파일을 다운로드해서, 파일을 읽고 써야 하는 작업이 파일 다운로드 결과에 종속적이라면
         파일 다운로드를 완전히 잘 마칠 때까지 안전하게 대기할 줄 기능이 필요합니다.
         이 함수는 크롬 드라이버가 파일을 완전히 다운로드받을 때까지 대기합니다.
@@ -290,3 +289,26 @@ class ChromeDriverManager:
             if new_height == last_height:
                 break
             last_height = new_height
+
+    def hide_google_ads(
+        self,
+        chrome_driver=None,
+    ):
+        """접속한 페이지에서 구글 광고를 숨겨줍니다.
+        """
+        if chrome_driver is None:
+            chrome_driver = self._cached_chrome_driver_li[-1]
+
+        all_iframes = chrome_driver.find_elements_by_tag_name("iframe")
+        if len(all_iframes) > 0:
+            print("Ad Found\n")
+            chrome_driver.execute_script("""
+                var elems = document.getElementsByTagName("iframe"); 
+                for(var i = 0, max = elems.length; i < max; i++)
+                    {
+                        elems[i].hidden=true;
+                    }
+                                """)
+            print('Total Ads: ' + str(len(all_iframes)))
+        else:
+            print('No frames found')
