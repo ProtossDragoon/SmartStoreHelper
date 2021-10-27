@@ -2,8 +2,7 @@
 
 """
 <TODO>
-100개가 넘어가도 동작하도록 만들기
-get_ranking_search_engine 제거하고 json 파일로 이전
+창의 최소크기와 최대크기 지정
 """
 
 # 내장 라이브러리
@@ -13,6 +12,7 @@ import time
 import shutil
 import pathlib
 import glob
+import json
 from datetime import date
 
 # 서드파티
@@ -28,31 +28,6 @@ cdm = ChromeDriverManager()
 cdm.set_default_download_dir(pathlib.Path(__file__).stem, join=True)
 chrome_driver = cdm.get_chrome_driver()
 chrome_download_dir = cdm.get_default_download_dir()
-
-
-def get_ranking_search_engine(name):
-    return {
-        "랭킹도구":{
-            "url":"http://dogumaster.com/biz/rank",
-            "스토어명":{
-                "input_tag_name":"query",
-                "input_tag_id":"input_mall",
-            },
-            "검색어":{
-                "input_tag_name":"query",
-                "input_tag_id":"input_query",
-            },
-            "CSV추출":{
-                "button_tag_id":"btn_csv"
-            },
-            "엑셀추출":{
-                "button_tag_id":"btn_excel"
-            },
-            "검색어최대길이":15,
-            "최대반복가능횟수":100,
-            "출력파일이름":"랭킹도구마스터",
-        },
-    }.get(name)
 
 
 def get_latest_file():
@@ -73,47 +48,67 @@ def get_latest_file():
     return df
 
 
+def read_json():
+    """파일 이름과 동일한 파일명의 json 파일을 읽어들입니다.
+    """
+    filename = pathlib.Path(__file__).stem
+    path = os.path.join(
+        os.path.dirname(os.path.realpath(__file__)), 
+        f"{filename}.json")
+    print(path)
+    with open(path, 'r') as f:
+        di = json.load(f)
+    return di
+
+
 def run():
-    smartstore_name = "헬로콕"    
-    search_engine_meta = get_ranking_search_engine("랭킹도구")
-    chrome_driver.get(search_engine_meta['url'])
+    rk_meta = read_json()['랭킹도구']
+    gs_meta = read_json()['google_spreadsheet']
+    gs_r_meta = gs_meta['read_keyword']
+    gs_w_meta = gs_meta['write_ranking']
+    smartstore_name = read_json()['smartstore_name']
+
+    chrome_driver.get(rk_meta['url'])
     chrome_driver.find_element(by='id',
-        value=search_engine_meta["스토어명"]["input_tag_id"]
+        value=rk_meta['스토어명_input']['tag_id']
     ).send_keys(smartstore_name)
 
     gc = authorize()
     worksheet = get_sheet(gc, 
-        spreadsheet_url="https://docs.google.com/spreadsheets/d/1_5cFQJFzAS8WkUBM1JrFFmm9gvH-Cz9RcxBUvGxdZ7Y/edit?usp=sharing",
-        spreadsheet_name="시트1")
-    cells = worksheet.range('B2:B999')
-    print(f'total {repr(len(cells))} cells')
-
+        spreadsheet_url=gs_r_meta['url'],
+        spreadsheet_name=gs_r_meta['name'])
+    
+    r_index_start = gs_r_meta['keyword']['start_col'] + str(gs_r_meta['keyword']['start_row'])
+    r_index_end   = gs_r_meta['keyword']['end_col'] + str(gs_r_meta['keyword']['end_row'])
+    reading_cells = worksheet.range(f'{r_index_start}:{r_index_end}')
+    print(f'range : {r_index_start}:{r_index_end}')
+    print(f'total {repr(len(reading_cells))} cells')
     
     df = None
     _join_cnt = 0
-    for i, cell in enumerate(cells, start=1):
+    for i, cell in enumerate(reading_cells, start=1):
 
         if len(cell.value):
-            keyword = cell.value.replace(" ", "")
-            if len(keyword) <= search_engine_meta["검색어최대길이"]:
+            keyword = cell.value.replace(' ', '')
+            if len(keyword) <= rk_meta['검색어_input']['검색어최대길이']:
                 print(f'{i} - {keyword}')
-                # print(cells[i] is cell)
+                # print(cells[i] is reading_cells)
                 # # returns True : 둘은 사이는 복사관계가 아니라 동일한 객체임.
                 chrome_driver.find_element(by='id',
-                    value=search_engine_meta["검색어"]["input_tag_id"]
+                    value=rk_meta['검색어_input']['tag_id']
                 ).send_keys(keyword)
                 chrome_driver.find_element(by='xpath',
-                    value='//*[@id="input_submit"]').click()
+                    value=rk_meta['검색_button']['xpath']).click()
                 time.sleep(2)
 
-        if i % search_engine_meta["최대반복가능횟수"] == 0:
+        if i % rk_meta['검색최대반복가능횟수'] == 0:
             chrome_driver.find_element(by='id',
-                value=search_engine_meta["CSV추출"]["button_tag_id"],
+                value=rk_meta['CSV추출_button']['tag_id'],
             ).click()
             cdm.wait_for_downloads_v2()
-            chrome_driver.get(search_engine_meta['url'])
+            chrome_driver.get(rk_meta['url'])
             chrome_driver.find_element(by='id',
-                value=search_engine_meta["스토어명"]["input_tag_id"]
+                value=rk_meta['스토어명_input']['tag_id']
             ).send_keys(smartstore_name)
 
             if not _join_cnt:
@@ -125,7 +120,7 @@ def run():
 
     if not _join_cnt:
         chrome_driver.find_element(by='id',
-            value=search_engine_meta["CSV추출"]["button_tag_id"],
+            value=rk_meta['CSV추출_button']['tag_id'],
         ).click()
         cdm.wait_for_downloads_v2()
         df = get_latest_file()
@@ -137,8 +132,8 @@ def run():
     mm = str(today.month)
     dd = str(today.day)
     worksheet = get_sheet(gc, 
-        spreadsheet_url="https://docs.google.com/spreadsheets/d/1_5cFQJFzAS8WkUBM1JrFFmm9gvH-Cz9RcxBUvGxdZ7Y/edit?usp=sharing",
-        spreadsheet_name=f'rank_{yy}_{mm}_{dd}')
+        spreadsheet_url=gs_w_meta['url'],
+        spreadsheet_name=f"{gs_w_meta['name']}_{yy}_{mm}_{dd}")
     overwrite_entire_dataframe(worksheet, df)
 
     cdm.chrome_close_safely()

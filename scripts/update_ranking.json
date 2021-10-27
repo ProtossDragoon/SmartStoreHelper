@@ -1,12 +1,13 @@
 {
+    "smartstore_name":"헬로콕",
     "랭킹도구":{
         "url":"http://dogumaster.com/biz/rank",
-        "스토어명":{
+        "스토어명_input":{
             "info":"스토어 이름을 넣는 필드",
-            "input_tag_name":"query",
-            "input_tag_id":"input_mall"
+            "tag_name":"query",
+            "tag_id":"input_mall"
         },
-        "검색어":{
+        "검색어_input":{
             "info":"검색창",
             "tag_name":"input",
             "tag_id":"input_query",
@@ -32,7 +33,7 @@
             "tag_class":"",
             "출력파일이름":"랭킹도구마스터"
         },
-        "최대반복가능횟수":100,
+        "검색최대반복가능횟수":100,
         "min_window_w":500,
         "min_window_h":500    
     },
@@ -52,7 +53,7 @@
         "write_ranking":{
             "info":"키워드에 대한 랭킹을 적어내는 스프레드시트",
             "url":"https://docs.google.com/spreadsheets/d/1_5cFQJFzAS8WkUBM1JrFFmm9gvH-Cz9RcxBUvGxdZ7Y/edit?usp=sharing",
-            "name":"rank_yy_mm_dd"
+            "name":"rank"
         }
     }
 }
