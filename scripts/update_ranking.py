@@ -19,6 +19,7 @@ from datetime import date
 import pandas as pd
 
 # 우리 프로젝트
+from .common import read_json
 from storehelper.crawlutil.common import ChromeDriverManager
 from storehelper.sheetutil.common import authorize, get_sheet
 from storehelper.sheetutil.writer import overwrite_entire_dataframe
@@ -48,25 +49,12 @@ def get_latest_file():
     return df
 
 
-def read_json():
-    """파일 이름과 동일한 파일명의 json 파일을 읽어들입니다.
-    """
-    filename = pathlib.Path(__file__).stem
-    path = os.path.join(
-        os.path.dirname(os.path.realpath(__file__)), 
-        f"{filename}.json")
-    print(path)
-    with open(path, 'r') as f:
-        di = json.load(f)
-    return di
-
-
 def run():
-    rk_meta = read_json()['랭킹도구']
-    gs_meta = read_json()['google_spreadsheet']
+    rk_meta = read_json(filename=pathlib.Path(__file__).stem)['랭킹도구']
+    gs_meta = read_json(filename=pathlib.Path(__file__).stem)['google_spreadsheet']
     gs_r_meta = gs_meta['read_keyword']
     gs_w_meta = gs_meta['write_ranking']
-    smartstore_name = read_json()['smartstore_name']
+    smartstore_name = read_json(filename=pathlib.Path(__file__).stem)['smartstore_name']
 
     chrome_driver.get(rk_meta['url'])
     chrome_driver.find_element(by='id',

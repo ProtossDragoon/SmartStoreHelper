@@ -18,6 +18,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 # 우리 프로젝트
+from .common import read_json
 from storehelper.crawlutil.common import ChromeDriverManager
 from storehelper.sheetutil.common import authorize, get_sheet
 
@@ -26,19 +27,6 @@ cdm = ChromeDriverManager()
 cdm.set_default_download_dir(pathlib.Path(__file__).stem, join=True)
 chrome_driver = cdm.get_chrome_driver()
 chrome_download_dir = cdm.get_default_download_dir()
-
-
-def read_json():
-    """파일 이름과 동일한 파일명의 json 파일을 읽어들입니다.
-    """
-    filename = pathlib.Path(__file__).stem
-    path = os.path.join(
-        os.path.dirname(os.path.realpath(__file__)), 
-        f"{filename}.json")
-    print(path)
-    with open(path, 'r') as f:
-        di = json.load(f)
-    return di
 
 
 def item_exists(ns_meta):
@@ -83,8 +71,8 @@ def item_exists(ns_meta):
 
 
 def run():
-    ns_meta = read_json()['naver_shopping']
-    gs_meta = read_json()['google_spreadsheet']
+    ns_meta = read_json(filename=pathlib.Path(__file__).stem)['naver_shopping']
+    gs_meta = read_json(filename=pathlib.Path(__file__).stem)['google_spreadsheet']
     
     chrome_driver.get(ns_meta['url'])
     worksheet = get_sheet(authorize(),
