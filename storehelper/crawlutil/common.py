@@ -25,6 +25,9 @@ import logging
 
 # 서드파티
 from selenium import webdriver
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options  
 
@@ -127,8 +130,8 @@ class ChromeDriverManager:
         w:int=None, 
         h:int=None,
     )->None:
-        assert not w
-        assert not h
+        assert w is not None
+        assert h is not None
         self._window_w.append(w)
         self._window_h.append(h)
 
@@ -191,15 +194,20 @@ class ChromeDriverManager:
             prefs = {'download.default_directory':self._default_download_dir[-1]}
             _chrome_options = webdriver.ChromeOptions()
             _chrome_options.add_experimental_option('prefs', prefs)
+            if self._mem_headless_mode[-1]:
+                _chrome_options.add_argument("--headless")
+                _chrome_options.binary_location = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+            """
+            if self._mem_window_h[-1] or self._mem_window_w[-1]:
+                print(f'[driver_generation] window size w:{self._mem_window_w[-1]} h:{self._mem_window_h[-1]}')
+                _chrome_options.add_argument(f"--window-size={self._mem_window_w[-1]}, {self._mem_window_h[-1]}")
+            """
             chrome_driver = webdriver.Chrome(
                     self._mem_chrome_driver_path[-1],
-                    chrome_options=_chrome_options,
-                    )
-            if self._mem_headless_mode[-1]:
-                chrome_driver.add_argument("--headless")
-                chrome_driver.binary_location = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
-            if self._mem_window_h[-1] or self._mem_window_w[-1]:
-                chrome_driver.add_argument(f"--window_size={self._mem_window_w[-1]},{self._mem_window_h[-1]}")
+                    chrome_options=_chrome_options)
+            chrome_driver.set_window_size(
+                self._mem_window_w[-1],
+                self._mem_window_h[-1])
             self._cached_chrome_driver_li.append(chrome_driver)
             return chrome_driver
 
@@ -233,6 +241,20 @@ class ChromeDriverManager:
         for chrome_driver in self._cached_chrome_driver_li:
             chrome_driver.close()
             chrome_driver.quit()
+
+    def wait_for_block(self, *,
+        id=None,
+        chrome_driver=None,
+        delay:int=30,
+    )->None:
+        if chrome_driver is None:
+            chrome_driver = self._cached_chrome_driver_li[-1]
+
+        WebDriverWait(chrome_driver, delay).until(
+            EC.presence_of_element_located(
+                (By.XPATH, f'//*[@id="{id}" and contains(@style, "none")]')
+            )
+        )
 
     def wait_for_downloads_v2(
         self,
