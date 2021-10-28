@@ -205,9 +205,10 @@ class ChromeDriverManager:
             chrome_driver = webdriver.Chrome(
                     self._mem_chrome_driver_path[-1],
                     chrome_options=_chrome_options)
-            chrome_driver.set_window_size(
-                self._mem_window_w[-1],
-                self._mem_window_h[-1])
+            if self._mem_window_h[-1] or self._mem_window_w[-1]:
+                chrome_driver.set_window_size(
+                    width=self._mem_window_w[-1],
+                    height=self._mem_window_h[-1])
             self._cached_chrome_driver_li.append(chrome_driver)
             return chrome_driver
 
