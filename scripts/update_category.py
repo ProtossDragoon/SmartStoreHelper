@@ -188,9 +188,6 @@ def run():
             w_cell.value = ret
             ret = ''
 
-        if i == 5:
-            break
-
     # API 콜을 최소화하기 위해 모든 작업을 마친 뒤 업데이트합니다.
     # 중간에 업데이트할 수 있도록 만들어주는 것도 좋은 방법이리라 생각합니다.
     worksheet.update_cells(writing_cells)
