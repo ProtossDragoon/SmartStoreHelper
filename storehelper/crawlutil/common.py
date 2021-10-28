@@ -43,10 +43,14 @@ class ChromeDriverManager:
         self._mem_chrome_driver_path = []
         self._mem_default_download_dir = []
         self._mem_headless_mode = []
+        self._mem_window_w = []
+        self._mem_window_h = []
 
         self._chrome_driver_path = []
         self._default_download_dir = []
         self._headless_mode = []
+        self._window_w = []
+        self._window_h = []
         
         self._cached_chrome_driver_li = []
 
@@ -57,9 +61,16 @@ class ChromeDriverManager:
         _p = os.path.abspath(_dic['DOWNLOADING_FILE_DIR'])
         self._mem_default_download_dir.append(_p)
         self._default_download_dir.append(_p)
-        
+
+        # 백그라운드 모드
         self._mem_headless_mode.append(False)
         self._headless_mode.append(False) 
+
+        # 창 크기
+        self._mem_window_w.append(False)
+        self._window_w.append(False)
+        self._mem_window_h.append(False)
+        self._window_h.append(False)
         
     def _warning_driver_status(self):
         """chrome driver 은 option 이 변경될 때마다 다시 생성해주어야 합니다. 
@@ -76,6 +87,12 @@ class ChromeDriverManager:
         self._check_same(
             mem_val=self._mem_headless_mode[-1],
             val=self._headless_mode[-1])
+        self._check_same(
+            mem_val=self._mem_window_h[-1],
+            val=self._window_h[-1])
+        self._check_same(
+            mem_val=self._mem_window_w[-1],
+            val=self._window_w[-1])
         print(f'다른 요소가 있다면, get_chrome_driver() 을 통해'
                 '업데이트된 크롬 드라이버를 다시 받아오세요.')
 
@@ -103,8 +120,17 @@ class ChromeDriverManager:
             val (bool, optional): headless mode 를 사용할지 여부입니다. 
                 Defaults to False.
         """
-        self._headless_mode[-1] = val
+        self._headless_mode.append(val)
         self._warning_driver_status()
+
+    def set_chrome_window_size(self, *,
+        w:int=None, 
+        h:int=None,
+    )->None:
+        assert not w
+        assert not h
+        self._window_w.append(w)
+        self._window_h.append(h)
 
     def set_default_download_dir(self, 
         path:str, *,
@@ -144,12 +170,24 @@ class ChromeDriverManager:
             val=self._headless_mode[-1],
             warning=False)
         cond.add(_c)
+        _d = self._check_same(
+            mem_val=self._mem_window_h[-1],
+            val=self._window_h[-1],
+            warning=False)
+        cond.add(_d)
+        _e = self._check_same(
+            mem_val=self._mem_window_w[-1],
+            val=self._window_w[-1],
+            warning=False)
+        cond.add(_e)
 
-        if False in cond: # 기존 드라이버와 달라진 점이 있다면
-            self._mem_chrome_driver_path.append(self._chrome_driver_path[-1])
-            self._mem_default_download_dir.append(self._default_download_dir[-1])
-            self._mem_headless_mode.append(self._headless_mode[-1])
+        def driver_generation():
+            """최근 등록한 정보를 바탕으로 한
+            크롬 드라이버 생성 로직 헬퍼 함수
 
+            Returns:
+                chrome_driver: 크롬 드라이버를
+            """
             prefs = {'download.default_directory':self._default_download_dir[-1]}
             _chrome_options = webdriver.ChromeOptions()
             _chrome_options.add_experimental_option('prefs', prefs)
@@ -160,22 +198,24 @@ class ChromeDriverManager:
             if self._mem_headless_mode[-1]:
                 chrome_driver.add_argument("--headless")
                 chrome_driver.binary_location = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+            if self._mem_window_h[-1] or self._mem_window_w[-1]:
+                chrome_driver.add_argument(f"--window_size={self._mem_window_w[-1]},{self._mem_window_h[-1]}")
             self._cached_chrome_driver_li.append(chrome_driver)
             return chrome_driver
+
+        if False in cond: # 기존 드라이버와 달라진 점이 있다면
+            self._mem_chrome_driver_path.append(self._chrome_driver_path[-1])
+            self._mem_default_download_dir.append(self._default_download_dir[-1])
+            self._mem_headless_mode.append(self._headless_mode[-1])
+            self._mem_window_h.append(self._window_h[-1])
+            self._mem_window_w.append(self._window_w[-1])
+            return driver_generation()
         else: # 모두 다 변한 것이 없다면
             if new: # 그럼에도 새로운 드라이버를 원한다면
-                prefs = {'download.default_directory':self._mem_default_download_dir[-1]}
-                _chrome_options = webdriver.ChromeOptions()
-                _chrome_options.add_experimental_option('prefs', prefs)
-                new_chrome_driver = webdriver.Chrome(
-                    self._mem_chrome_driver_path[-1],
-                    chrome_options=_chrome_options,
-                    )
-                self._cached_chrome_driver_li.append(new_chrome_driver)
-                return new_chrome_driver
+                return driver_generation()
             else:
                 return self._cached_chrome_driver_li[-1]
-    
+
     def get_default_download_dir(self):
         return self._mem_default_download_dir[-1]
 
