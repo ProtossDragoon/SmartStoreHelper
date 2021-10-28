@@ -19,7 +19,7 @@ from datetime import date
 import pandas as pd
 
 # 우리 프로젝트
-from .common import read_json
+from .common import read_json, get_latest_file_as_df
 from storehelper.crawlutil.common import ChromeDriverManager
 from storehelper.sheetutil.common import authorize, get_sheet
 from storehelper.sheetutil.writer import overwrite_entire_dataframe
@@ -29,24 +29,6 @@ cdm = ChromeDriverManager()
 cdm.set_default_download_dir(pathlib.Path(__file__).stem, join=True)
 chrome_driver = cdm.get_chrome_driver()
 chrome_download_dir = cdm.get_default_download_dir()
-
-
-def get_latest_file():
-    """크롬 다운로드 경로로부터 최신 csv 파일을 읽어와
-    dataframe 객체로 리턴합니다.
-
-    Returns:
-        DataFrame: 데이터프레임 객체 csv
-    """
-    query = os.path.join(chrome_download_dir,'*.csv') # 출력파일 이름으로 설정해주고 싶지만 한글 안먹음
-    files = glob.glob(query)
-    print(f'searching files...\n\t{repr(files)}')
-    files.sort(key=lambda x: os.path.getmtime(x))
-    file = files[-1]
-    print(f'selected {file}')
-    df = pd.read_csv(file)
-
-    return df
 
 
 def run():
@@ -101,9 +83,12 @@ def run():
 
             if not _join_cnt:
                 # 처음에만 저장해요
-                df = get_latest_file()
-
-            df = pd.concat([df, get_latest_file()], join='outer', axis=0)
+                df = get_latest_file_as_df(chrome_download_dir)
+            else:
+                df = pd.concat(
+                    [df, get_latest_file_as_df(chrome_download_dir)], 
+                    join='outer', 
+                    axis=0)
             _join_cnt += 1
 
     if not _join_cnt:
@@ -111,7 +96,7 @@ def run():
             value=rk_meta['CSV추출_button']['tag_id'],
         ).click()
         cdm.wait_for_downloads_v2()
-        df = get_latest_file()
+        df = get_latest_file_as_df(chrome_download_dir)
 
     # 데이터를 구글 스프레드시트에 씁니다.
     gc = authorize()
