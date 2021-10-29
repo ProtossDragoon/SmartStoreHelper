@@ -1,10 +1,5 @@
 #-*- coding: utf-8 -*-
 
-"""
-<TODO>
-창의 최소크기와 최대크기 지정
-"""
-
 # 내장 라이브러리
 import os
 import pprint
@@ -24,6 +19,11 @@ from storehelper.crawlutil.common import ChromeDriverManager
 from storehelper.sheetutil.common import authorize, get_sheet
 from storehelper.sheetutil.writer import overwrite_entire_dataframe
 
+rk_meta = read_json(filename=pathlib.Path(__file__).stem)['랭킹도구']
+gs_meta = read_json(filename=pathlib.Path(__file__).stem)['google_spreadsheet']
+gs_r_meta = gs_meta['read_keyword']
+gs_w_meta = gs_meta['write_ranking']
+smartstore_name = read_json(filename=pathlib.Path(__file__).stem)['smartstore_name']
 
 cdm = ChromeDriverManager()
 cdm.set_default_download_dir(pathlib.Path(__file__).stem, join=True)
@@ -32,12 +32,6 @@ chrome_download_dir = cdm.get_default_download_dir()
 
 
 def run():
-    rk_meta = read_json(filename=pathlib.Path(__file__).stem)['랭킹도구']
-    gs_meta = read_json(filename=pathlib.Path(__file__).stem)['google_spreadsheet']
-    gs_r_meta = gs_meta['read_keyword']
-    gs_w_meta = gs_meta['write_ranking']
-    smartstore_name = read_json(filename=pathlib.Path(__file__).stem)['smartstore_name']
-
     chrome_driver.get(rk_meta['url'])
     chrome_driver.find_element(by='id',
         value=rk_meta['스토어명_input']['tag_id']
