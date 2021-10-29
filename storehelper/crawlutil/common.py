@@ -194,6 +194,10 @@ class ChromeDriverManager:
             prefs = {'download.default_directory':self._default_download_dir[-1]}
             _chrome_options = webdriver.ChromeOptions()
             _chrome_options.add_experimental_option('prefs', prefs)
+
+            # 기본: 시크릿 모드
+            _chrome_options.add_argument("--incognito")
+
             if self._mem_headless_mode[-1]:
                 _chrome_options.add_argument("--headless")
                 _chrome_options.binary_location = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
@@ -202,13 +206,16 @@ class ChromeDriverManager:
                 print(f'[driver_generation] window size w:{self._mem_window_w[-1]} h:{self._mem_window_h[-1]}')
                 _chrome_options.add_argument(f"--window-size={self._mem_window_w[-1]}, {self._mem_window_h[-1]}")
             """
+
             chrome_driver = webdriver.Chrome(
                     self._mem_chrome_driver_path[-1],
                     chrome_options=_chrome_options)
+
             if self._mem_window_h[-1] or self._mem_window_w[-1]:
                 chrome_driver.set_window_size(
                     width=self._mem_window_w[-1],
                     height=self._mem_window_h[-1])
+
             self._cached_chrome_driver_li.append(chrome_driver)
             return chrome_driver
 
