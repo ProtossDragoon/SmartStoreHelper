@@ -32,7 +32,8 @@ def get_sheet(gc, spreadsheet_url, spreadsheet_name):
     except WorksheetNotFound:
         worksheet = doc.add_worksheet(
             title=spreadsheet_name,
-            rows="10000", cols="100")
+            rows="1000", cols="10")
+            # 최대치가 있으므로 주의해야 한다.
     return worksheet
 
 
