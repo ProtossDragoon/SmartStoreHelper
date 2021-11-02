@@ -46,18 +46,21 @@ class ChromeDriverManager:
         self._mem_chrome_driver_path = []
         self._mem_default_download_dir = []
         self._mem_headless_mode = []
+        self._mem_secure_mode = []
         self._mem_window_w = []
         self._mem_window_h = []
 
         self._chrome_driver_path = []
         self._default_download_dir = []
         self._headless_mode = []
+        self._secure_mode = []
         self._window_w = []
         self._window_h = []
         
         self._cached_chrome_driver_li = []
 
         # init
+        # ---
         self._mem_chrome_driver_path.append(os.path.abspath(_dic['CHROME_DRIVER_PATH']))
         self._chrome_driver_path.append(os.path.abspath(_dic['CHROME_DRIVER_PATH']))
 
@@ -68,6 +71,10 @@ class ChromeDriverManager:
         # 백그라운드 모드
         self._mem_headless_mode.append(False)
         self._headless_mode.append(False) 
+
+        # 비밀 모드
+        self._mem_secure_mode.append(True)
+        self._secure_mode.append(True)
 
         # 창 크기
         self._mem_window_w.append(False)
@@ -80,6 +87,8 @@ class ChromeDriverManager:
         옵션이 변경되었는데 get_chrome_driver 이 호출되지 않은 경우
         이 함수는 경고를 출력합니다.
         """
+        #FIXME : 쓰레귀 코드 ㅠㅠ. 이펙티브 파이썬
+        #TODO : Refactor
         print(f'가장 마지막에 get_chrome_driver 을 호출한 시점의 정보입니다.')
         self._check_same(
             mem_val=self._mem_chrome_driver_path[-1],
@@ -96,6 +105,9 @@ class ChromeDriverManager:
         self._check_same(
             mem_val=self._mem_window_w[-1],
             val=self._window_w[-1])
+        self._check_same(
+            mem_val=self._mem_secure_mode[-1],
+            val=self._secure_mode[-1])
         print(f'다른 요소가 있다면, get_chrome_driver() 을 통해'
                 '업데이트된 크롬 드라이버를 다시 받아오세요.')
 
@@ -124,6 +136,10 @@ class ChromeDriverManager:
                 Defaults to False.
         """
         self._headless_mode.append(val)
+        self._warning_driver_status()
+
+    def set_secure_mode(self, val:bool=True):
+        self._secure_mode.append(val)
         self._warning_driver_status()
 
     def set_chrome_window_size(self, *,
@@ -183,6 +199,11 @@ class ChromeDriverManager:
             val=self._window_w[-1],
             warning=False)
         cond.add(_e)
+        _f = self._check_same(
+            mem_val=self._mem_secure_mode[-1],
+            val=self._secure_mode[-1],
+            warning=False)
+        cond.add(_f)
 
         def driver_generation():
             """최근 등록한 정보를 바탕으로 한
@@ -196,16 +217,12 @@ class ChromeDriverManager:
             _chrome_options.add_experimental_option('prefs', prefs)
 
             # 기본: 시크릿 모드
-            _chrome_options.add_argument("--incognito")
+            if self._mem_secure_mode[-1]:
+                _chrome_options.add_argument("--incognito")
 
             if self._mem_headless_mode[-1]:
                 _chrome_options.add_argument("--headless")
                 _chrome_options.binary_location = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
-            """
-            if self._mem_window_h[-1] or self._mem_window_w[-1]:
-                print(f'[driver_generation] window size w:{self._mem_window_w[-1]} h:{self._mem_window_h[-1]}')
-                _chrome_options.add_argument(f"--window-size={self._mem_window_w[-1]}, {self._mem_window_h[-1]}")
-            """
 
             chrome_driver = webdriver.Chrome(
                     self._mem_chrome_driver_path[-1],
@@ -223,6 +240,7 @@ class ChromeDriverManager:
             self._mem_chrome_driver_path.append(self._chrome_driver_path[-1])
             self._mem_default_download_dir.append(self._default_download_dir[-1])
             self._mem_headless_mode.append(self._headless_mode[-1])
+            self._mem_secure_mode.append(self._secure_mode[-1])
             self._mem_window_h.append(self._window_h[-1])
             self._mem_window_w.append(self._window_w[-1])
             return driver_generation()
