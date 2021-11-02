@@ -1,0 +1,47 @@
+{
+    "도구마스터키워드도구":{
+        "url":"https://whereispost.com/keyword/",
+        "키워드_input":{
+            "info":"검색창",
+            "tag_id":"keyword",
+            "tag_name":"input",
+            "xpath":"//*[@id=\"keyword\"]"
+        },
+        "검색_button":{
+            "info":"검색하기 버튼",
+            "tag_name":"button",
+            "xpath":"/html/body/content/div/div[2]/div[1]/div/div/div/div/form/button"
+        },
+        "CSV추출_button":{
+            "info":"CSV 추출하기 버튼",
+            "tag_name":"div",
+            "tag_id":"excel",
+            "tag_class":"clear",
+            "xpath":"//*[@id=\"excel\"]",
+            "출력파일이름":"도구마스터키워드도구"
+        },
+        "검색최대반복가능횟수":40,
+        "blocking_tag_id":"overlay",
+        "window_size_w":540,
+        "window_size_h":960
+    },
+    "google_spreadsheet":{
+        "read_keyword":{
+            "info":"키워드의 목록을 읽어오는 스프레드시트",
+            "url":"https://docs.google.com/spreadsheets/d/1_5cFQJFzAS8WkUBM1JrFFmm9gvH-Cz9RcxBUvGxdZ7Y/edit?usp=sharing",
+            "name":"시트1",
+            "keyword":{
+                "info":"키워드가 적혀 있는 영역",
+                "start_row":2,
+                "start_col":"B",
+                "end_row":999,
+                "end_col":"B"                
+            }
+        },
+        "write_traffic":{
+            "info":"키워드에 대한 랭킹을 적어내는 스프레드시트",
+            "url":"https://docs.google.com/spreadsheets/d/1_5cFQJFzAS8WkUBM1JrFFmm9gvH-Cz9RcxBUvGxdZ7Y/edit?usp=sharing",
+            "name":"traffic"
+        }
+    }
+}

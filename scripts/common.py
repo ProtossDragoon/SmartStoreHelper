@@ -42,7 +42,10 @@ def get_latest_file(chrome_download_dir:str, parse_fn=None):
     with open(p, mode='r') as f:
         lines = f.readlines()
     with open(p, mode='w') as f:
-        f.writelines(parse_fn(lines))
+        if parse_fn:
+            f.writelines(parse_fn(lines))
+        else:
+            f.writelines(lines)
     return p
 
 
