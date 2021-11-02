@@ -1,0 +1,42 @@
+{
+    "google_spreadsheet":{
+        "read_keyword":{
+            "url":"https://docs.google.com/spreadsheets/d/1_5cFQJFzAS8WkUBM1JrFFmm9gvH-Cz9RcxBUvGxdZ7Y/edit?usp=sharing",
+            "name":"파워링크시드",
+            "seed_groupname":{
+                "info":"해당 키워드조합의 광고그룹(adgroup)",
+                "range":{
+                    "info":"해당 키워드조합의 광고그룹이 적혀 있는 영역",
+                    "start_row":3,
+                    "start_col":"B",
+                    "end_row":999,
+                    "end_col":"B"                
+                }
+            },            
+            "seed_backbone":{
+                "info":"백본 키워드",
+                "range":{
+                    "info":"키워드가 적혀 있는 영역",
+                    "start_row":3,
+                    "start_col":"E",
+                    "end_row":999,
+                    "end_col":"F"                
+                }
+            },
+            "seed_combination":{
+                "info":"선택적으로 조합되는 키워드",
+                "range":{
+                    "info":"키워드가 적혀 있는 영역",
+                    "start_row":3,
+                    "start_col":"G",
+                    "end_row":999,
+                    "end_col":"L"                
+                }
+            }
+        },
+        "write_keyword":{
+            "info":"조합된 키워드를 쓰는 영역. 시트를 자동으로 생성합니다.",
+            "url":"https://docs.google.com/spreadsheets/d/1_5cFQJFzAS8WkUBM1JrFFmm9gvH-Cz9RcxBUvGxdZ7Y/edit?usp=sharing"
+        }
+    }    
+}

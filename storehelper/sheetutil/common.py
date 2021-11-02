@@ -26,7 +26,7 @@ def authorize():
 
 def get_sheet(gc, spreadsheet_url, spreadsheet_name):
     meta = get_json_meatadata()
-    doc = gc.open_by_url(spreadsheet_url) # 스프레스시트 문서 가져오기 
+    doc = get_document(gc, spreadsheet_url)
     try:
         worksheet = doc.worksheet(spreadsheet_name) # 시트 선택하기
     except WorksheetNotFound:
@@ -35,6 +35,16 @@ def get_sheet(gc, spreadsheet_url, spreadsheet_name):
             rows="1000", cols="10")
             # 최대치가 있으므로 주의해야 한다.
     return worksheet
+
+
+def get_document(gc, spreadsheet_url):  
+    doc = gc.open_by_url(spreadsheet_url) # 스프레스시트 문서 가져오기 
+    return doc
+
+
+def remove_sheet(gc, spreadsheet_url, spreadsheet_name):
+    doc = get_document(gc, spreadsheet_url)
+    doc.del_worksheet(get_sheet(gc, spreadsheet_url, spreadsheet_name))
 
 
 # 서드파티 라이브러리
