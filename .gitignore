@@ -134,6 +134,8 @@ chromedriver
 # 개인정보
 /storehelper/metadata/*client_secret*.json
 /storehelper/metadata/*smartstore*.json
+/storehelper/metadata/*SECRET*.txt
+/storehelper/metadata/*LICENSE*.txt
 
 # 결과물
 *.csv

@@ -1,10 +1,19 @@
 ```json
 {
-    "version":1,
+    "version":2,
     "DOWNLOADING_FILE_DIR":"./assets",
     "CREDENTIAL_FILE_PATH_PATH":"",
-    "SPREADSHEET_URL":"",
-    "SPREADSHEET_NAME":"",
+    "NAVER_ADS_CREDENTIAL":{
+        "<your_id>":{
+            "ACCESS_LICENSE_TXT_PATH":"",
+            "SECRET_KEY_TXT_PATH":""
+        },
+        "<your_id_2>":{
+            "ACCESS_LICENSE_TXT_PATH":"",
+            "SECRET_KEY_TXT_PATH":""
+        },
+        // ...
+    },
     "API_SCOPE":[
         "https://spreadsheets.google.com/feeds",
         "https://www.googleapis.com/auth/drive"

@@ -16,7 +16,8 @@ from selenium import webdriver
 
 
 def assert_json(
-    json_path:str='./storehelper/metadata/template.json'
+    json_path:str='./storehelper/metadata/template.json',
+    print_meta:bool=False,
 )->dict:
     """json 파일에 적힌 경로들이 유효한지 파악합니다.
 
@@ -29,13 +30,20 @@ def assert_json(
     """
     with open(json_path) as f:
         dic = json.load(f)
-    pprint.pprint(dic)
+    if print_meta:
+        pprint.pprint(dic)
     assert os.path.exists(dic['CREDENTIAL_FILE_PATH_PATH']), f"\
         {dic['CREDENTIAL_FILE_PATH_PATH']} 는 존재하지 않는 파일입니다."
     assert os.path.exists(dic['CHROME_DRIVER_PATH']), f"\
         {dic['CHROME_DRIVER_PATH']} 는 존재하지 않는 파일입니다."
     assert os.path.exists(dic['DOWNLOADING_FILE_DIR']), f"\
         {dic['DOWNLOADING_FILE_DIR']} 는 존재하지 않는 파일입니다."
+    
+    for _, v in dic['NAVER_ADS_CREDENTIAL'].items(): 
+        assert os.path.exists(v['ACCESS_LICENSE_TXT_PATH']), f"\
+            {v['ACCESS_LICENSE_TXT_PATH']} 는 존재하지 않는 파일입니다."
+        assert os.path.exists(v['SECRET_KEY_TXT_PATH']), f"\
+            {v['SECRET_KEY_TXT_PATH']} 는 존재하지 않는 파일입니다."
     return dic
 
 

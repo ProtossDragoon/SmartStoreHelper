@@ -27,6 +27,6 @@
             "type": "python",
             "request": "launch",
             "module": "scripts.generate_keyword"
-        },
+        }
     ]
 }
