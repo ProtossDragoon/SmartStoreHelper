@@ -19,19 +19,12 @@ from storehelper.crawlutil.common import ChromeDriverManager
 from storehelper.sheetutil.common import authorize, get_sheet
 from storehelper.sheetutil.writer import overwrite_entire_dataframe
 
-rk_meta = read_json(filename=pathlib.Path(__file__).stem)['랭킹도구']
-gs_meta = read_json(filename=pathlib.Path(__file__).stem)['google_spreadsheet']
-gs_r_meta = gs_meta['read_keyword']
-gs_w_meta = gs_meta['write_ranking']
-smartstore_name = read_json(filename=pathlib.Path(__file__).stem)['smartstore_name']
 
-cdm = ChromeDriverManager()
-cdm.set_default_download_dir(pathlib.Path(__file__).stem, join=True)
-chrome_driver = cdm.get_chrome_driver()
-chrome_download_dir = cdm.get_default_download_dir()
-
-
-def run():
+def run(
+    rk_meta, gs_meta,
+    gs_r_meta, gs_w_meta, smartstore_name,
+    cdm, chrome_driver, chrome_download_dir
+)->None:
     chrome_driver.get(rk_meta['url'])
     chrome_driver.find_element(by='id',
         value=rk_meta['스토어명_input']['tag_id']
@@ -107,4 +100,18 @@ def run():
 
 
 if __name__=='__main__':
-    run()
+    rk_meta = read_json(filename=pathlib.Path(__file__).stem)['랭킹도구']
+    gs_meta = read_json(filename=pathlib.Path(__file__).stem)['google_spreadsheet']
+    gs_r_meta = gs_meta['read_keyword']
+    gs_w_meta = gs_meta['write_ranking']
+    smartstore_name = read_json(filename=pathlib.Path(__file__).stem)['smartstore_name']
+
+    cdm = ChromeDriverManager()
+    cdm.set_default_download_dir(pathlib.Path(__file__).stem, join=True)
+    chrome_driver = cdm.get_chrome_driver()
+    chrome_download_dir = cdm.get_default_download_dir()
+    run(
+        rk_meta, gs_meta,
+        gs_r_meta, gs_w_meta, smartstore_name,
+        cdm, chrome_driver, chrome_download_dir
+    )

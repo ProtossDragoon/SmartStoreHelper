@@ -23,12 +23,6 @@ from storehelper.crawlutil.common import ChromeDriverManager
 from storehelper.sheetutil.common import authorize, get_sheet
 
 
-cdm = ChromeDriverManager()
-cdm.set_default_download_dir(pathlib.Path(__file__).stem, join=True)
-chrome_driver = cdm.get_chrome_driver()
-chrome_download_dir = cdm.get_default_download_dir()
-
-
 def item_exists(ns_meta):
     """페이지에 아이템이 몇 개 존재하는지 여부를 리턴하는 헬퍼 함수입니다.
 
@@ -70,10 +64,11 @@ def item_exists(ns_meta):
                 return 0, None
 
 
-def run():
-    ns_meta = read_json(filename=pathlib.Path(__file__).stem)['naver_shopping']
-    gs_meta = read_json(filename=pathlib.Path(__file__).stem)['google_spreadsheet']
-    
+def run(
+    ns_meta, gs_meta, 
+    cdm, chrome_driver, chrome_download_dir
+)->None:
+
     chrome_driver.get(ns_meta['url'])
     worksheet = get_sheet(authorize(),
         spreadsheet_url=gs_meta['url'],
@@ -183,4 +178,14 @@ def run():
 
 
 if __name__ == "__main__":
-    run()
+    cdm = ChromeDriverManager()
+    cdm.set_default_download_dir(pathlib.Path(__file__).stem, join=True)
+    chrome_driver = cdm.get_chrome_driver()
+    chrome_download_dir = cdm.get_default_download_dir()
+
+    ns_meta = read_json(filename=pathlib.Path(__file__).stem)['naver_shopping']
+    gs_meta = read_json(filename=pathlib.Path(__file__).stem)['google_spreadsheet']
+    run(
+        ns_meta, gs_meta, 
+        cdm, chrome_driver, chrome_download_dir
+    )
