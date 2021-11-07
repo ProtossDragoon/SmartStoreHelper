@@ -27,6 +27,12 @@
             "type": "python",
             "request": "launch",
             "module": "scripts.generate_keyword"
+        },
+        {
+            "name": "enroll_powerlink",
+            "type": "python",
+            "request": "launch",
+            "module": "scripts.enroll_powerlink"
         }
     ]
 }

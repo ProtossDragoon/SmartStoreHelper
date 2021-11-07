@@ -87,3 +87,25 @@ def authorize_v2_experimental():
     service = build('sheets', 'v4', credentials=creds)
     sheet = service.spreadsheets()
     return sheet
+
+
+def range_reader(ws, gs_meta, name):
+    """형식이 
+    [<name>][range][start_row]
+    [<name>][range][start_col]
+    [<name>][range][end_row]
+    [<name>][range][end_col]
+    과 같다면 다 읽어들일 수 있습니다.
+    """
+    r_index_start = (
+        gs_meta[f'{name}']['range']['start_col']
+        + str(gs_meta[f'{name}']['range']['start_row']))
+    r_index_end   = (
+        gs_meta[f'{name}']['range']['end_col'] + 
+        str(gs_meta[f'{name}']['range']['end_row']))
+    r_range = f'{r_index_start}:{r_index_end}'
+    r_cells = ws.range(r_range)
+    print(f'range : {r_index_start}:{r_index_end}')
+    print(f'total {repr(len(r_cells))} cells')
+
+    return r_cells
