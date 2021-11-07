@@ -479,6 +479,7 @@ def run(
             keyword_li.append(adk_c.value)
             if i % 100 == 99:
                 # 등록
+                keyword_li = np.unique(np.array(keyword_li)).tolist()
                 plm.create_adkeyword(adgroup_id, keyword_list=keyword_li)
                 keyword_li = []
 
