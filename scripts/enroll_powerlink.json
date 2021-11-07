@@ -1,0 +1,98 @@
+{
+    "naver_ads":{
+        "ads_ids":[
+            "2349884"
+        ],
+        "url":{
+            "base":"https://manage.searchad.naver.com/customers",
+            "main":"campaigns",
+            "create_campaign":"create"
+        },
+        "main":{
+            "info":"검색광고 메인입니다."
+        },
+        "create_campaign":{
+            "info":"광고 만들기 창입니다."
+        },
+        "buisness_channel":{
+            "info":"비즈니스 채널 정보",
+            "hellocock_smartstore":{
+                "info":"헬로콕 스마트스토어 메인",
+                "purpose":["PC", "MOBILE"],
+                "URL":"https://smartstore.naver.com/hellocock",
+                "ID":"bsn-a001-00-000000005957875",
+                "MALL_ID":"ncp_1o8uqz_01",
+                "MALL_NAME":"헬로콕"
+            }
+        }
+    },
+    "google_spreadsheet":{
+        "read_keyword":{
+            "url":"https://docs.google.com/spreadsheets/d/1_5cFQJFzAS8WkUBM1JrFFmm9gvH-Cz9RcxBUvGxdZ7Y/edit?usp=sharing",
+            "name":"파워링크메인테이블",
+            "campaign_name":{
+                "info":"캠페인 이름이 담긴 열",
+                "range":{
+                    "start_row":1,
+                    "start_col":"A",
+                    "end_row":100,
+                    "end_col":"A"                
+                }
+            },
+            "adgroup_name":{
+                "info":"광고그룹 이름이 담긴 열",
+                "range":{
+                    "start_row":1,
+                    "start_col":"B",
+                    "end_row":100,
+                    "end_col":"B"
+                }
+            },
+            "ads_headline":{
+                "info":"광고명",
+                "range":{
+                    "start_row":1,
+                    "start_col":"C",
+                    "end_row":100,
+                    "end_col":"C"
+                }
+            },
+            "ads_description":{
+                "info":"내용",
+                "range":{
+                    "start_row":1,
+                    "start_col":"D",
+                    "end_row":100,
+                    "end_col":"D"
+                }
+            },
+            "adgroup_config_pc":{
+                "info":"",
+                "range":{
+                    "start_row":1,
+                    "start_col":"E",
+                    "end_row":100,
+                    "end_col":"E"
+                }
+            },
+            "adgroup_config_mobile":{
+                "info":"",
+                "range":{
+                    "start_row":1,
+                    "start_col":"F",
+                    "end_row":100,
+                    "end_col":"F"
+                }
+            },
+            "adkeyword_in_campaign":{
+                "info":"특정 캠페인인, 즉 시트명이 캠페인 이름인 시트에 키워드가 적힌 영역입니다.",
+                "range":{
+                    "start_row":1,
+                    "start_col":"A",
+                    "end_row":100000,
+                    "end_col":"A"                    
+                }
+            }
+        }        
+    }
+}

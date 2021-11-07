@@ -18,9 +18,9 @@
                 "range":{
                     "info":"키워드가 적혀 있는 영역",
                     "start_row":3,
-                    "start_col":"E",
+                    "start_col":"D",
                     "end_row":999,
-                    "end_col":"F"                
+                    "end_col":"E"                
                 }
             },
             "seed_combination":{
@@ -28,9 +28,9 @@
                 "range":{
                     "info":"키워드가 적혀 있는 영역",
                     "start_row":3,
-                    "start_col":"G",
+                    "start_col":"F",
                     "end_row":999,
-                    "end_col":"L"                
+                    "end_col":"K"                
                 }
             }
         },

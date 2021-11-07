@@ -2,6 +2,12 @@
     "version":1,
     "DOWNLOADING_FILE_DIR":"./assets",
     "CREDENTIAL_FILE_PATH_PATH":"./storehelper/metadata/smartstore-329009-a5fd1d2298a4.json",
+    "NAVER_ADS_CREDENTIAL":{
+        "2349884":{
+            "ACCESS_LICENSE_TXT_PATH":"./storehelper/metadata/NAVER_ADS_ACCESS_LICENSE_2349884.txt",
+            "SECRET_KEY_TXT_PATH":"./storehelper/metadata/NAVER_ADS_SECRET_KEY_2349884.txt"
+        }
+    },
     "API_SCOPE":[
         "https://spreadsheets.google.com/feeds",
         "https://www.googleapis.com/auth/drive"
