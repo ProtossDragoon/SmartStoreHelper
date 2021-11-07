@@ -33,54 +33,54 @@
             "campaign_name":{
                 "info":"캠페인 이름이 담긴 열",
                 "range":{
-                    "start_row":2,
+                    "start_row":1,
                     "start_col":"A",
-                    "end_row":2,
+                    "end_row":100,
                     "end_col":"A"                
                 }
             },
             "adgroup_name":{
                 "info":"광고그룹 이름이 담긴 열",
                 "range":{
-                    "start_row":2,
+                    "start_row":1,
                     "start_col":"B",
-                    "end_row":2,
+                    "end_row":100,
                     "end_col":"B"
                 }
             },
             "ads_headline":{
                 "info":"광고명",
                 "range":{
-                    "start_row":2,
+                    "start_row":1,
                     "start_col":"C",
-                    "end_row":2,
+                    "end_row":100,
                     "end_col":"C"
                 }
             },
             "ads_description":{
                 "info":"내용",
                 "range":{
-                    "start_row":2,
+                    "start_row":1,
                     "start_col":"D",
-                    "end_row":2,
+                    "end_row":100,
                     "end_col":"D"
                 }
             },
             "adgroup_config_pc":{
                 "info":"",
                 "range":{
-                    "start_row":2,
+                    "start_row":1,
                     "start_col":"E",
-                    "end_row":2,
+                    "end_row":100,
                     "end_col":"E"
                 }
             },
             "adgroup_config_mobile":{
                 "info":"",
                 "range":{
-                    "start_row":2,
+                    "start_row":1,
                     "start_col":"F",
-                    "end_row":2,
+                    "end_row":100,
                     "end_col":"F"
                 }
             },
